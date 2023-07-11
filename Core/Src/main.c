@@ -66,7 +66,7 @@ void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* hadc){
 
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim){
 
-	if (htim == &htim2){
+	if (htim->Instance == TIM2){
 	 	   counter = __HAL_TIM_GET_COUNTER(&htim2);
 	 	   pid_Compute(pid);
 	 	   TIM4 ->CCR1 = (pidOut(pid));

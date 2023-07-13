@@ -23,7 +23,7 @@
 #include "opamp.h"
 #include "tim.h"
 #include "usart.h"
-#include "usb.h"
+#include "usb_device.h"
 #include "gpio.h"
 
 /* Private includes ----------------------------------------------------------*/
@@ -39,6 +39,10 @@
 	 volatile uint32_t counter ;
 	 uint32_t adcSt;
 	 HAL_TIM_StateTypeDef timSt, pwmSt;
+	 HAL_OPAMP_StateTypeDef opmState;
+	 HAL_StatusTypeDef opmCalibState;
+	 HAL_StatusTypeDef opmStartState;
+	 uint8_t an;
 
 
 /* USER CODE END PTD */
@@ -58,7 +62,7 @@ void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* hadc){
 	 	}
 	 	else if(hadc ->Instance == ADC3){
 	 		 uint32_t _ADC = HAL_ADC_GetValue(hadc);
-	 		weightPrint(_ADC);
+	 		 weightPrint(_ADC);
 	 	}
 
 	 }
@@ -67,12 +71,14 @@ void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* hadc){
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim){
 
 	if (htim->Instance == TIM2){
-	 	   counter = __HAL_TIM_GET_COUNTER(&htim2);
-	 	   pid_Compute(pid);
-	 	   TIM4 ->CCR1 = (pidOut(pid));
-	 	   mallocFree(pid);
-	 	}
-	 }
+	    HAL_GPIO_TogglePin(LD2_GPIO_Port, LD2_Pin);
+	    counter = __HAL_TIM_GET_COUNTER(&htim2);
+	    pid_Compute(pid);
+	    TIM4 ->CCR1 = (pidOut(pid));
+	    mallocFree(pid);
+
+	}
+}
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
@@ -127,15 +133,20 @@ int main(void)
   MX_TIM4_Init();
   MX_I2C1_Init();
   MX_OPAMP2_Init();
-  MX_USB_PCD_Init();
   MX_ADC1_Init();
   MX_ADC3_Init();
+  MX_USB_DEVICE_Init();
   /* USER CODE BEGIN 2 */
 //  ssd1306_Init();
+  SSD1306_Init();
+  HAL_Delay(2000);
+//  while (HAL_OPAMP_SelfCalibrate(&hopamp2) == HAL_OK);
+  HAL_OPAMP_Start(&hopamp2);
   HAL_TIM_Base_Start_IT(&htim2);
   HAL_ADC_Start_IT(&hadc1);
   HAL_ADC_Start_IT(&hadc3);
   HAL_TIM_PWM_Start(&htim4, TIM_CHANNEL_1);
+  weightPrint(0);
 
   /* USER CODE END 2 */
 
@@ -149,6 +160,7 @@ int main(void)
 	  adcSt = HAL_ADC_GetState(&hadc1);
 	  timSt = HAL_TIM_Base_GetState(&htim2);
 	  pwmSt = HAL_TIM_PWM_GetState(&htim4);
+	  opmState = HAL_OPAMP_GetState(&hopamp2);
 	  HAL_UART_Transmit(&huart2, (uint8_t *)counter, sizeof(counter), HAL_MAX_DELAY);
 	  HAL_Delay(50);
   }

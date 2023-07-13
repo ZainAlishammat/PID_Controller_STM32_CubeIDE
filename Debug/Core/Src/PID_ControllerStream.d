@@ -37,7 +37,7 @@ Core/Src/PID_ControllerStream.o: ../Core/Src/PID_ControllerStream.c \
  ../Drivers/STM32F3xx_HAL_Driver/Inc/stm32f3xx_hal_tim_ex.h \
  ../Drivers/STM32F3xx_HAL_Driver/Inc/stm32f3xx_hal_uart.h \
  ../Drivers/STM32F3xx_HAL_Driver/Inc/stm32f3xx_hal_uart_ex.h \
- ../Core/Inc/ssd1306.h ../Core/Inc/fonts.h ../Core/Inc/BHT.h
+ ../Core/Inc/ssd1306.h ../Core/Inc/fonts.h
 ../Core/Inc/PID_ControllerStream.h:
 ../Drivers/STM32F3xx_HAL_Driver/Inc/stm32f3xx_hal.h:
 ../Core/Inc/stm32f3xx_hal_conf.h:
@@ -78,4 +78,3 @@ Core/Src/PID_ControllerStream.o: ../Core/Src/PID_ControllerStream.c \
 ../Drivers/STM32F3xx_HAL_Driver/Inc/stm32f3xx_hal_uart_ex.h:
 ../Core/Inc/ssd1306.h:
 ../Core/Inc/fonts.h:
-../Core/Inc/BHT.h:

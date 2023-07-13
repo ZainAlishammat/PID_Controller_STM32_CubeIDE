@@ -8,8 +8,6 @@
 
 #include <PID_ControllerStream.h>
 
-
-
  struct PID_CONTROLLER {
 
 		float 		timeSpace;
@@ -27,7 +25,7 @@
 
 PID_Controller * pid_init(void){
 
-	    PID_Controller* PID = malloc (sizeof( PID_Controller));
+	    PID_Controller* PID = malloc (sizeof(PID_Controller));
 			if(PID == NULL) return NULL;
 	return PID;
 }
@@ -44,35 +42,35 @@ void PID_Set(PID_Controller* PID, float kp,float ki,float kd,uint32_t referenceP
 }
 
 
-static float __e( PID_Controller* pid) {
-    return (float)(pid->referencePoint - (pid->in));
+static float __e(PID_Controller* pid) {
+    return (float)((pid->referencePoint) - (pid->in));
 }
 
 
-uint32_t __Proportional( PID_Controller* pid) {
-    return (pid->KP * __e(pid));
+uint32_t __Proportional(PID_Controller* pid) {
+    return ((pid->KP) * __e(pid));
 }
 
-float __Integral( PID_Controller* pid) {
-    return pid->KI * pid->eSum;
+float __Integral (PID_Controller* pid) {
+    return pid->KI * (pid->eSum);
 }
 
-float __Derivative( PID_Controller* pid) {
-    return pid->KD * (__e(pid) - pid->eOld) / pid->timeSpace;
+float __Derivative(PID_Controller* pid) {
+    return pid->KD * (__e(pid) - (pid->eOld)) / pid->timeSpace;
 }
 
-PID_State pid_Compute( PID_Controller* pid) {
+PID_State pid_Compute(PID_Controller* pid) {
 
   if(pid != NULL){
 
-      uint32_t res = (uint32_t)(__Proportional(pid) + __Integral(pid) + __Derivative(pid));
+      int32_t res = (int32_t)(__Proportional(pid) + __Integral(pid) + __Derivative(pid));
       if (res >= PWM_MAX_DUTYCYCLE) {
           (pid->out) = PWM_MAX_DUTYCYCLE;
-          pid->eSum -= __e(pid) / pid->timeSpace;
+          pid->eSum -= __e(pid) / (pid->timeSpace);
       }
       else if (res <= PWM_MIN_DUTYCYCLE) {
           (pid->out) = PWM_MIN_DUTYCYCLE;
-          pid->eSum -= __e(pid) / pid->timeSpace;
+          pid->eSum -= __e(pid) / (pid->timeSpace);
       }
       else {
           (pid->out) = res;
@@ -91,12 +89,12 @@ void mallocFree(PID_Controller * pid){
   free(pid);
 }
 
-uint32_t  pidOut(PID_Controller *pid){
+int32_t  pidOut(PID_Controller *pid){
 
       if(pid!=NULL){
-	  return pid->out;
+	  return (pid->out);
   }
-  return NULL;
+      return -1;
 }
 
 void pidIn(PID_Controller* pid, uint32_t in){
@@ -124,14 +122,21 @@ float weightMeasur(uint32_t x){
   return weight;
   }
 
-void weightPrint(uint32_t adc){
+void  weightPrint(uint32_t adc){
 
+  SSD1306_GotoXY (0,0);
   char weight[100];
+  if(adc == 0){
+      sprintf(weight, "No weight! :( ");
+      SSD1306_Puts(weight, &Font_7x10, SSD1306_COLOR_WHITE);
+      SSD1306_UpdateScreen() ;
+  }
+  else{
+        sprintf(weight, "s%.2f%s%% It weights ", weightMeasur(adc), " g :)");
+        SSD1306_Puts(weight, &Font_7x10, SSD1306_COLOR_WHITE);
+        SSD1306_UpdateScreen() ;
+  }
 
-  ssd1306_SetCursor(0,0);
-  sprintf(weight, "s%.2f%s%% It weights ", weightMeasur(adc), " g");
-  ssd1306_WriteString(weight, Font_11x18, White);
-  ssd1306_UpdateScreen();
 }
 
 

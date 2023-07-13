@@ -38,8 +38,11 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
  ../Drivers/STM32F3xx_HAL_Driver/Inc/stm32f3xx_hal_uart_ex.h \
  ../Core/Inc/adc.h ../Core/Inc/main.h ../Core/Inc/i2c.h \
  ../Core/Inc/opamp.h ../Core/Inc/tim.h ../Core/Inc/usart.h \
- ../Core/Inc/usb.h ../Core/Inc/gpio.h ../Core/Inc/PID_ControllerStream.h \
- ../Core/Inc/ssd1306.h ../Core/Inc/fonts.h ../Core/Inc/BHT.h
+ ../USB_DEVICE/App/usb_device.h \
+ ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_def.h \
+ ../USB_DEVICE/Target/usbd_conf.h ../Core/Inc/gpio.h \
+ ../Core/Inc/PID_ControllerStream.h ../Core/Inc/ssd1306.h \
+ ../Core/Inc/fonts.h
 ../Core/Inc/main.h:
 ../Drivers/STM32F3xx_HAL_Driver/Inc/stm32f3xx_hal.h:
 ../Core/Inc/stm32f3xx_hal_conf.h:
@@ -84,9 +87,10 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
 ../Core/Inc/opamp.h:
 ../Core/Inc/tim.h:
 ../Core/Inc/usart.h:
-../Core/Inc/usb.h:
+../USB_DEVICE/App/usb_device.h:
+../Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_def.h:
+../USB_DEVICE/Target/usbd_conf.h:
 ../Core/Inc/gpio.h:
 ../Core/Inc/PID_ControllerStream.h:
 ../Core/Inc/ssd1306.h:
 ../Core/Inc/fonts.h:
-../Core/Inc/BHT.h:

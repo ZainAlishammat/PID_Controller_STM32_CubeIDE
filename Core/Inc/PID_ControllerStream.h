@@ -9,11 +9,10 @@
 #define INC_PID_CONTROLLERSTREAM_H_
 
 #include "stm32f3xx_hal.h" // Include the appropriate header file for your microcontroller platform
-#include <stm32f3xx_hal_adc.h>
 #include <stdlib.h>
-#include "ssd1306.h"
 #include <stdio.h>
 #include <math.h>
+#include <ssd1306.h>
 
 #define ADC_MAX_ANALOG_IN 4096 - 1
 #define ADC_MIN_ANALOG_IN 0
@@ -25,7 +24,7 @@
 typedef enum {
 
   PID_FAILD = 0,
-  PID_SUCCESS = 1,
+  PID_SUCCESS = 1
 }PID_State;
 
 typedef struct PID_CONTROLLER PID_Controller;
@@ -47,7 +46,7 @@ typedef struct PID_CONTROLLER PID_Controller;
 
 	void mallocFree(PID_Controller * pid);
 
-	uint32_t  pidOut(PID_Controller *pid);
+	int32_t  pidOut(PID_Controller *pid);
 
 	void pidIn (PID_Controller *pid, uint32_t in);
 
